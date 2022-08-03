@@ -19,8 +19,8 @@ public class PersonController {
     private static List<Person> persons = new ArrayList<Person>();
 
     static {
-        persons.add(new Person("Bill", "Gates"));
-        persons.add(new Person("Steve", "Jobs"));
+        persons.add(new Person("Bill", "Gates", 70, "USA"));
+        persons.add(new Person("Steve", "Jobs", 50, "USA"));
     }
 
     @Value("${welcome.message}")
@@ -32,7 +32,8 @@ public class PersonController {
     @RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
     public String index(Model model) {
 
-        model.addAttribute("message", message);
+        model.addAttribute("message", "Hello world!");
+        model.addAttribute("second_message", "Cursor forever!");
 
         return "index";
     }
@@ -60,10 +61,12 @@ public class PersonController {
 
         String firstName = personForm.getFirstName();
         String lastName = personForm.getLastName();
+        int age = personForm.getAge();
+        String address = personForm.getAddress();
 
         if (firstName != null && firstName.length() > 0 //
                 && lastName != null && lastName.length() > 0) {
-            Person newPerson = new Person(firstName, lastName);
+            Person newPerson = new Person(firstName, lastName, age, address);
             persons.add(newPerson);
 
             return "redirect:/personList";
@@ -71,5 +74,13 @@ public class PersonController {
 
         model.addAttribute("errorMessage", errorMessage);
         return "addPerson";
+    }
+
+    @RequestMapping(value = { "/info" }, method = RequestMethod.GET)
+    public String getInfo(Model model) {
+
+
+
+        return "info";
     }
 }

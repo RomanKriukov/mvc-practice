@@ -14,12 +14,17 @@
         <tr>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>Age</th>
+            <th>Address</th>
         </tr>
         <tr th:each ="person : ${persons}">
             <td th:utext="${person.firstName}">...</td>
             <td th:utext="${person.lastName}">...</td>
+            <td th:utext="${person.age}">...</td>
+            <td th:utext="${person.address}">...</td>
         </tr>
     </table>
 </div>
+<a th:href="@{/info}">Info</a>
 </body>
 </html>
