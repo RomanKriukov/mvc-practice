@@ -38,6 +38,10 @@ public class PersonForm {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public void someMethod(){
+
+    }
 }
 
 
