@@ -1,0 +1,21 @@
+<head>
+    <meta charset="UTF-8" />
+    <title>Persons for update</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1>Choose person for update</h1>
+<br/><br/>
+<div>
+    <table border="1">
+        <tr>
+            <th>First Name  Last Name</th>
+        </tr>
+        <tr th:each ="person : ${persons}">
+            <td><a th:href="'update?id=' + ${person.id} " th:utext="${person.firstName + ' '} + ${person.lastName}">...</a></td>
+        </tr>
+    </table>
+</div>
+<a th:href="@{/info}">Info</a>
+</body>
+</html>

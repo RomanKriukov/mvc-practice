@@ -10,6 +10,9 @@
 
 <form th:action="@{/addPerson}"
       th:object="${personForm}" method="POST">
+    Id:
+    <input type="text" th:field="*{id}" />
+    </br>
     First Name:
     <input type="text" th:field="*{firstName}" />
     <br/>

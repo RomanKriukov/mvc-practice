@@ -5,9 +5,7 @@ import lviv.cursor.demo.model.PersonForm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.ArrayList;
@@ -19,8 +17,8 @@ public class PersonController {
     private static List<Person> persons = new ArrayList<Person>();
 
     static {
-        persons.add(new Person("Bill", "Gates", 70, "USA"));
-        persons.add(new Person("Steve", "Jobs", 50, "USA"));
+        persons.add(new Person(1, "Bill", "Gates", 70, "USA"));
+        persons.add(new Person(2, "Steve", "Jobs", 50, "USA"));
     }
 
     @Value("${welcome.message}")
@@ -59,6 +57,7 @@ public class PersonController {
     public String savePerson(Model model, //
                              @ModelAttribute("personForm") PersonForm personForm) {
 
+        int id = personForm.getId();
         String firstName = personForm.getFirstName();
         String lastName = personForm.getLastName();
         int age = personForm.getAge();
@@ -66,7 +65,7 @@ public class PersonController {
 
         if (firstName != null && firstName.length() > 0 //
                 && lastName != null && lastName.length() > 0) {
-            Person newPerson = new Person(firstName, lastName, age, address);
+            Person newPerson = new Person(id, firstName, lastName, age, address);
             persons.add(newPerson);
 
             return "redirect:/personList";
@@ -74,6 +73,51 @@ public class PersonController {
 
         model.addAttribute("errorMessage", errorMessage);
         return "addPerson";
+    }
+
+    @RequestMapping(value = { "/choosePersonForUpdate" }, method = RequestMethod.GET)
+    public String choosePersonForUpdate(Model model) {
+
+        model.addAttribute("persons", persons);
+
+        return "choosePersonForUpdate";
+    }
+
+    @RequestMapping(value = {"/update"}, method = RequestMethod.GET)
+    public String updatePersonPage(Model model, @RequestParam int id){
+        Person person = persons.stream().filter(p -> id == p.getId()).findFirst().orElse(null);
+        PersonForm personForm = new PersonForm();
+        personForm.setId(person.getId());
+        personForm.setFirstName(person.getFirstName());
+        personForm.setLastName(person.getLastName());
+        personForm.setAge(person.getAge());
+        personForm.setAddress(person.getAddress());
+        model.addAttribute("personForm", personForm);
+        return "updatePersonPage";
+    }
+
+    @RequestMapping(value = { "/updatePerson" }, method = RequestMethod.POST)
+    public String updatePerson(Model model, //
+                             @ModelAttribute("personForm") PersonForm personForm) {
+
+        int id = personForm.getId();
+        String firstName = personForm.getFirstName();
+        String lastName = personForm.getLastName();
+        int age = personForm.getAge();
+        String address = personForm.getAddress();
+
+        if (firstName != null && firstName.length() > 0 //
+                && lastName != null && lastName.length() > 0) {
+            Person newPerson = new Person(id, firstName, lastName, age, address);
+            Person person = persons.stream().filter(p -> id == p.getId()).findFirst().orElse(null);
+            int personId = persons.indexOf(person);
+            persons.set(personId, newPerson);
+
+            return "redirect:/personList";
+        }
+
+        model.addAttribute("errorMessage", errorMessage);
+        return "updatePersonPage";
     }
 
     @RequestMapping(value = { "/info" }, method = RequestMethod.GET)
