@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8" />
     <title>Person List</title>
@@ -25,6 +25,10 @@
         </tr>
     </table>
 </div>
+<a th:href="@{/choosePerson?action=} + 'update'">Update person</a>
+</br>
+<a th:href="@{/choosePerson?action=} + 'delete'">Delete person</a>
+</br>
 <a th:href="@{/info}">Info</a>
 </body>
 </html>

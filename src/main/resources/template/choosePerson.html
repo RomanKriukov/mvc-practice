@@ -1,10 +1,12 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8" />
-    <title>Persons for update</title>
+    <title th:utext="'Persons for ' + ${action}">...</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<h1>Choose person for update</h1>
+<h1 th:utext="'Choose person for ' + ${action}">...</h1>
 <br/><br/>
 <div>
     <table border="1">
@@ -12,7 +14,7 @@
             <th>First Name  Last Name</th>
         </tr>
         <tr th:each ="person : ${persons}">
-            <td><a th:href="'update?id=' + ${person.id} " th:utext="${person.firstName + ' '} + ${person.lastName}">...</a></td>
+            <td><a th:href="${action} + '?id=' + ${person.id}" th:utext="${person.firstName + ' '} + ${person.lastName}">...</a></td>
         </tr>
     </table>
 </div>

@@ -75,12 +75,13 @@ public class PersonController {
         return "addPerson";
     }
 
-    @RequestMapping(value = { "/choosePersonForUpdate" }, method = RequestMethod.GET)
-    public String choosePersonForUpdate(Model model) {
+    @RequestMapping(value = { "/choosePerson" }, method = RequestMethod.GET)
+    public String choosePersonForUpdate(Model model, @RequestParam String action) {
 
         model.addAttribute("persons", persons);
+        model.addAttribute("action", action);
 
-        return "choosePersonForUpdate";
+        return "choosePerson";
     }
 
     @RequestMapping(value = {"/update"}, method = RequestMethod.GET)
@@ -118,6 +119,13 @@ public class PersonController {
 
         model.addAttribute("errorMessage", errorMessage);
         return "updatePersonPage";
+    }
+
+    @RequestMapping(value = {"/delete"}, method = RequestMethod.GET)
+    public String deletePerson(Model model, @RequestParam int id){
+        Person person = persons.stream().filter(p -> id == p.getId()).findFirst().orElse(null);
+        persons.remove(person);
+        return "redirect:/personList";
     }
 
     @RequestMapping(value = { "/info" }, method = RequestMethod.GET)
